@@ -10,10 +10,10 @@ class KokonkiHimalayaSpider(scrapy.Spider):
     name = "kokonkiHimalaya"
     start_urls = [
         'https://kokonki.pl/wloczka-himalaya-dolphin-baby/1',
-        # 'https://kokonki.pl/wloczka-himalaya-dolphin-baby/2/',
-        # 'https://miladruciarnia.pl/pl/c/Doplhin-Baby/99',
-        # 'https://amicrafts.pl/pl/c/Dolphin-Baby/380',
-        # 'https://amicrafts.pl/pl/c/Dolphin-Baby/380/2'
+        'https://kokonki.pl/wloczka-himalaya-dolphin-baby/2/',
+        'https://miladruciarnia.pl/pl/c/Doplhin-Baby/99',
+        'https://amicrafts.pl/pl/c/Dolphin-Baby/380',
+        'https://amicrafts.pl/pl/c/Dolphin-Baby/380/2'
     ]
 
     def parse(self, response):
@@ -21,6 +21,7 @@ class KokonkiHimalayaSpider(scrapy.Spider):
             name = post.css('.productname::text').get()
             price = float(post.css('.price em::text').get().replace('\xa0zł', '').replace(',', '.'))
             page = response.css('.link-logo img::attr(alt)').get()
+            url = post.css('.prodname.f-row::attr(href)').get()
             # get the yarn number
             if re.search("3\d\d", name) is not None:
                 number = re.search("3\d\d", name).group(0)
@@ -38,7 +39,8 @@ class KokonkiHimalayaSpider(scrapy.Spider):
                 'price': price,
                 'availability': availability,
                 'number': number,
-                'page': page
+                'page': page,
+                'url':url,
             }
         print(page)
 
