@@ -86,3 +86,10 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+DB_SETTINGS = {
+    'db': "my_db",
+    'user': 'root',
+    'passwd': 'my_pass',
+    'host': '0.0.0.0',
+}

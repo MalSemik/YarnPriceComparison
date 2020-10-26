@@ -1,10 +1,25 @@
 import scrapy
 import re
+from peewee import *
 
+db = SqliteDatabase('yarn.db')
+
+class Yarn(Model):
+    name = CharField()
+    price = FloatField()
+    availability = BooleanField()
+    number = CharField()
+    page = CharField()
+    url = CharField()
+
+    class Meta:
+        database = db
 
 # TODO: Add what page
 # TODO: Automate pagination
 # TODO: database
+db.connect()
+db.create_tables([Yarn])
 
 class KokonkiHimalayaSpider(scrapy.Spider):
     name = "kokonkiHimalaya"
@@ -13,7 +28,10 @@ class KokonkiHimalayaSpider(scrapy.Spider):
         'https://kokonki.pl/wloczka-himalaya-dolphin-baby/2/',
         'https://miladruciarnia.pl/pl/c/Doplhin-Baby/99',
         'https://amicrafts.pl/pl/c/Dolphin-Baby/380',
-        'https://amicrafts.pl/pl/c/Dolphin-Baby/380/2'
+        'https://amicrafts.pl/pl/c/Dolphin-Baby/380/2',
+        #'https://kokonki.pl/pl/searchquery/kulka/1/phot/5?url=kulka',
+        #'https://miladruciarnia.pl/pl/searchquery/kulka/1/phot/5?url=kulka',
+        #'https://amicrafts.pl/pl/searchquery/kulka/1/phot/5?url=kulka'
     ]
 
     def parse(self, response):
@@ -34,15 +52,18 @@ class KokonkiHimalayaSpider(scrapy.Spider):
             else:
                 availability = False
 
-            yield {
-                'name': name,
-                'price': price,
-                'availability': availability,
-                'number': number,
-                'page': page,
-                'url':url,
-            }
-        print(page)
+            item = Yarn.create(name=name, price=price, availability=availability, number=number, page=page, url=url)
+            item.save()
+db.close()
+            # yield {
+            #     'name': name,
+            #     'price': price,
+            #     'availability': availability,
+            #     'number': number,
+            #     'page': page,
+            #     'url':url,
+            # }
+       # print(page)
 
         # next_page = response.css('a.next-posts-link::attr(href)').get()
         # if next_page is not None:

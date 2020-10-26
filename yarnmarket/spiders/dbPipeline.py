@@ -1,13 +1,6 @@
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-
-
-# useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
 import MySQLdb
 from scrapy.exceptions import NotConfigured
+
 class DatabasePipeline(object):
 
     def __init__(self, db, user, passwd, host):
@@ -38,12 +31,12 @@ class DatabasePipeline(object):
         self.cursor = self.conn.cursor()
 
     def process_item(self, item, spider):
-        sql = "INSERT INTO table (name, url, page) VALUES (%s, %s, %s)"
+        sql = "INSERT INTO table (field1, field2, field3) VALUES (%s, %s, %s)"
         self.cursor.execute(sql,
                             (
-                                item.get("name"),
-                                item.get("url"),
-                                item.get("page"),
+                                item.get("field1"),
+                                item.get("field2"),
+                                item.get("field3"),
                             )
                             )
         self.conn.commit()
@@ -51,6 +44,3 @@ class DatabasePipeline(object):
 
     def close_spider(self, spider):
         self.conn.close()
-# class YarnmarketPipeline:
-#     def process_item(self, item, spider):
-#         return item
