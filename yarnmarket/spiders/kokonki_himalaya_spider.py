@@ -44,7 +44,7 @@ class KokonkiHimalayaSpider(scrapy.Spider):
             if re.search("3\d\d", name) is not None:
                 number = re.search("3\d\d", name).group(0)
             else:
-                number = None
+                number = 0
 
             # get the yarn availability
             if post.css('.buttons.f-row fieldset button span::text').get() == 'Do koszyka':
