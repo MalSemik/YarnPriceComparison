@@ -24,13 +24,13 @@ db.create_tables([Yarn])
 class KokonkiHimalayaSpider(scrapy.Spider):
     name = "kokonkiHimalaya"
     start_urls = [
-        'https://kokonki.pl/wloczka-himalaya-dolphin-baby/1',
-        'https://kokonki.pl/wloczka-himalaya-dolphin-baby/2/',
-        'https://miladruciarnia.pl/pl/c/Doplhin-Baby/99',
-        'https://amicrafts.pl/pl/c/Dolphin-Baby/380',
-        'https://amicrafts.pl/pl/c/Dolphin-Baby/380/2',
-        'https://kokonki.pl/pl/c/Kulka-silikonowa/206',
-        'https://miladruciarnia.pl/pl/c/Kulka-silikonowa%2C-wypelnienie/182',
+        # 'https://kokonki.pl/wloczka-himalaya-dolphin-baby/1',
+        # 'https://kokonki.pl/wloczka-himalaya-dolphin-baby/2/',
+        # 'https://miladruciarnia.pl/pl/c/Doplhin-Baby/99',
+        # 'https://amicrafts.pl/pl/c/Dolphin-Baby/380',
+        # 'https://amicrafts.pl/pl/c/Dolphin-Baby/380/2',
+        # 'https://kokonki.pl/pl/c/Kulka-silikonowa/206',
+        # 'https://miladruciarnia.pl/pl/c/Kulka-silikonowa%2C-wypelnienie/182',
         'https://amicrafts.pl/pl/c/Wypelnienie/122'
         #'https://kokonki.pl/pl/searchquery/kulka/1/phot/5?url=kulka',
         #'https://miladruciarnia.pl/pl/searchquery/kulka/1/phot/5?url=kulka',
@@ -60,8 +60,8 @@ class KokonkiHimalayaSpider(scrapy.Spider):
                 item = Yarn.create(name=name, price=price, availability=availability, number=number, page=page, url=url)
                 item.save()
             else:
-                query.price = price
-                query.availability = availability
+                query = Yarn.update(price=price, availability=availability).where(Yarn.url == url)
+                query.execute()
 
 db.close()
             # yield {
