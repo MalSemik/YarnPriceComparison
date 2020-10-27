@@ -62,7 +62,7 @@ class KokonkiHimalayaSpider(scrapy.Spider):
             else:
                 query.price = price
                 query.availability = availability
-                query.save()
+
 db.close()
             # yield {
             #     'name': name,
