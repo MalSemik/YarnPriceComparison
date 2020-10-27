@@ -29,6 +29,9 @@ class KokonkiHimalayaSpider(scrapy.Spider):
         'https://miladruciarnia.pl/pl/c/Doplhin-Baby/99',
         'https://amicrafts.pl/pl/c/Dolphin-Baby/380',
         'https://amicrafts.pl/pl/c/Dolphin-Baby/380/2',
+        'https://kokonki.pl/pl/c/Kulka-silikonowa/206',
+        'https://miladruciarnia.pl/pl/c/Kulka-silikonowa%2C-wypelnienie/182',
+        'https://amicrafts.pl/pl/c/Wypelnienie/122'
         #'https://kokonki.pl/pl/searchquery/kulka/1/phot/5?url=kulka',
         #'https://miladruciarnia.pl/pl/searchquery/kulka/1/phot/5?url=kulka',
         #'https://amicrafts.pl/pl/searchquery/kulka/1/phot/5?url=kulka'
@@ -52,8 +55,14 @@ class KokonkiHimalayaSpider(scrapy.Spider):
             else:
                 availability = False
 
-            item = Yarn.create(name=name, price=price, availability=availability, number=number, page=page, url=url)
-            item.save()
+            query = Yarn.select().where(Yarn.url == url)
+            if not query.exists():
+                item = Yarn.create(name=name, price=price, availability=availability, number=number, page=page, url=url)
+                item.save()
+            else:
+                query.price = price
+                query.availability = availability
+                query.save()
 db.close()
             # yield {
             #     'name': name,
