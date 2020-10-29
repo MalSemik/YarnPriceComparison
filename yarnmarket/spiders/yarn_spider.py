@@ -1,40 +1,24 @@
 import scrapy
 import re
-from peewee import *
+from db_creation import Yarn, db
 
-db = SqliteDatabase('yarn.db')
+# # TODO: Automate pagination
 
-class Yarn(Model):
-    name = CharField()
-    price = FloatField()
-    availability = BooleanField()
-    number = CharField()
-    page = CharField()
-    url = CharField()
-
-    class Meta:
-        database = db
-
-# TODO: Add what page
-# TODO: Automate pagination
-# TODO: database
-db.connect()
-db.create_tables([Yarn])
 
 class KokonkiHimalayaSpider(scrapy.Spider):
     name = "kokonkiHimalaya"
     start_urls = [
-        # 'https://kokonki.pl/wloczka-himalaya-dolphin-baby/1',
-        # 'https://kokonki.pl/wloczka-himalaya-dolphin-baby/2/',
-        # 'https://miladruciarnia.pl/pl/c/Doplhin-Baby/99',
-        # 'https://amicrafts.pl/pl/c/Dolphin-Baby/380',
-        # 'https://amicrafts.pl/pl/c/Dolphin-Baby/380/2',
-        # 'https://kokonki.pl/pl/c/Kulka-silikonowa/206',
-        # 'https://miladruciarnia.pl/pl/c/Kulka-silikonowa%2C-wypelnienie/182',
+        'https://kokonki.pl/wloczka-himalaya-dolphin-baby/1',
+        'https://kokonki.pl/wloczka-himalaya-dolphin-baby/2/',
+        'https://miladruciarnia.pl/pl/c/Doplhin-Baby/99',
+        'https://amicrafts.pl/pl/c/Dolphin-Baby/380',
+        'https://amicrafts.pl/pl/c/Dolphin-Baby/380/2',
+        'https://kokonki.pl/pl/c/Kulka-silikonowa/206',
+        'https://miladruciarnia.pl/pl/c/Kulka-silikonowa%2C-wypelnienie/182',
         'https://amicrafts.pl/pl/c/Wypelnienie/122'
-        #'https://kokonki.pl/pl/searchquery/kulka/1/phot/5?url=kulka',
-        #'https://miladruciarnia.pl/pl/searchquery/kulka/1/phot/5?url=kulka',
-        #'https://amicrafts.pl/pl/searchquery/kulka/1/phot/5?url=kulka'
+        'https://kokonki.pl/pl/searchquery/kulka/1/phot/5?url=kulka',
+        'https://miladruciarnia.pl/pl/searchquery/kulka/1/phot/5?url=kulka',
+        'https://amicrafts.pl/pl/searchquery/kulka/1/phot/5?url=kulka'
     ]
 
     def parse(self, response):
